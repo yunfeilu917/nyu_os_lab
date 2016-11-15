@@ -1,15 +1,14 @@
 //
-//  32bit.h
+//  pte.h
 //  memory
 //
-//  Created by Yunfei Lu on 11/13/16.
+//  Created by Yunfei Lu on 11/14/16.
 //  Copyright © 2016 Yunfei Lu. All rights reserved.
 //
 
-#ifndef _2bit_h
-#define _2bit_h
-
-class pte  {
+#ifndef pte_h
+#define pte_h
+class Pte  {
     unsigned int present:1;
     unsigned int modified:1;
     unsigned int referenced:1;
@@ -30,4 +29,4 @@ public:
 };
 
 
-#endif /* _2bit_h */
+#endif /* pte_h */

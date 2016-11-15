@@ -1,25 +1,34 @@
 //
-//  Header.h
+//  pager.h
 //  memory
 //
-//  Created by Yunfei Lu on 11/13/16.
+//  Created by Yunfei Lu on 11/14/16.
 //  Copyright © 2016 Yunfei Lu. All rights reserved.
 //
 
-#ifndef Header_h
-#define Header_h
+#ifndef pager_h
+#define pager_h
+
 #include "pte.h"
 #include <vector>
+#include <unordered_map>
 
 class  Pager {
 public:
-    std::vector<pte> pageTable;
-    int frameNumbers;
-    virtual int getFrame();
+    
+    std::unordered_map<unsigned int, Pte*> pageTable;
+    virtual Pte* getFrame() = 0;
+    virtual void update() = 0;
     
 };
 
+
 class FIFOPager: public Pager {
-    
+    std::vector<Pte * > pageFrameUsed;
+public:
+    Pte* getFrame();
+    void update();
 };
-#endif /* Header_h */
+
+
+#endif /* pager_h */

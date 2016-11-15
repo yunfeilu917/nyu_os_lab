@@ -1,50 +1,50 @@
 //
-//  32bit.cpp
+//  pte.cpp
 //  memory
 //
-//  Created by Yunfei Lu on 11/13/16.
+//  Created by Yunfei Lu on 11/14/16.
 //  Copyright © 2016 Yunfei Lu. All rights reserved.
 //
 
 #include "pte.h"
 
 
-unsigned int pte::getFrameNum() {
+unsigned int Pte::getFrameNum() {
     return frame;
 }
 
-unsigned int pte::getPresentBit() {
+unsigned int Pte::getPresentBit() {
     return present;
 }
 
-void pte::setPresentBit() {
+void Pte::setPresentBit() {
     present = 0;
 }
 
-void pte::resetPresentBit() {
+void Pte::resetPresentBit() {
     present = 1;
 }
 
-unsigned int pte::getModifiedBit() {
+unsigned int Pte::getModifiedBit() {
     return modified;
 }
 
-void pte::setModifiedBit() {
+void Pte::setModifiedBit() {
     modified = 1;
 }
 
-void pte::resetModifiedBit() {
+void Pte::resetModifiedBit() {
     modified = 0;
 }
 
-unsigned int pte::getPagedOutBit() {
+unsigned int Pte::getPagedOutBit() {
     return pagedout;
 }
 
-void pte::resetPagedOutBit() {
+void Pte::resetPagedOutBit() {
     pagedout = 0;
 }
 
-void pte::setPagedOutBit() {
+void Pte::setPagedOutBit() {
     pagedout = 1;
 }

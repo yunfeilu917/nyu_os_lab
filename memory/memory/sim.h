@@ -11,9 +11,25 @@
 #include "pager.h"
 #include "pte.h"
 #include <vector>
-class simulation {
-    Pager pager;
-    vector<int> free_frame;
+#include <fstream>
+
+class Sim {
+    std::vector<Pte* > freeFrame;
+    std::vector<Pte* > frameTable; // has value of virtual page
+    Pte* allocateFrameFromFreeList();
+    bool getNextInstruction(unsigned int&, unsigned int&);
+    Pager *pager;
+    std::ifstream inFile;
+    int frameNumber;
+    
+    
+    
+public:
+    Pte* getFrame();
+    void simulate();
+    void init(int,const char*[]);
+    
 };
+
 
 #endif /* sim_h */
