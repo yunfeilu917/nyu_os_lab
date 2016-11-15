@@ -18,3 +18,32 @@ Pte* FIFOPager::getFrame() {
 
 void FIFOPager::update() {
 }
+
+Pte* SecondChancePager::getFrame() {
+    while (true) {
+        Pte* temp = pageFrameUsed.front();
+        if (temp->getReferencedBit() == 0) {
+            pageFrameUsed.erase(pageFrameUsed.begin());
+            pageFrameUsed.push_back(temp);
+            return temp;
+        }
+        else {
+            temp->resetReferencedBit();
+            pageFrameUsed.erase(pageFrameUsed.begin());
+            pageFrameUsed.push_back(temp);
+            continue;
+        }
+    }
+}
+
+void SecondChancePager::update() {
+    
+}
+
+Pte* NRUPager::getFrame() {
+    
+}
+
+void NRUPager::update() {
+    
+}

@@ -30,5 +30,17 @@ public:
     void update();
 };
 
+class SecondChancePager: public Pager {
+    std::vector<Pte *> pageFrameUsed;
+public:
+    Pte* getFrame();
+    void update();
+};
 
+class NRUPager: public Pager {
+    std::vector<Pte *> pageFrameUsed;
+public:
+    Pte* getFrame();
+    void update();
+};
 #endif /* pager_h */
