@@ -8,42 +8,55 @@
 
 #include "pager.h"
 #include <iostream>
-Pte* FIFOPager::getFrame() {
-    Pte* temp = pageFrameUsed.front();
-    pageFrameUsed.erase(pageFrameUsed.begin());
-    pageFrameUsed.push_back(temp);
+
+
+FIFOPager::FIFOPager() {
+    pageTable.resize(64);
+    for (int i = 0; i < 64; i++) {
+        pageTable[i] = new Pte();
+    }
+    frameTable.resize(16);
+    for (int i = 0; i < 16; i++) {
+        frameTable[i] = 64;
+    }
+    
+}
+
+
+unsigned int FIFOPager::getFrame() {
+    unsigned int temp = pageInMemory.front();
+    pageInMemory.erase(pageInMemory.begin());
+    pageInMemory.push_back(temp);
     return temp;
     
 }
 
-void FIFOPager::update() {
-}
-
-Pte* SecondChancePager::getFrame() {
-    while (true) {
-        Pte* temp = pageFrameUsed.front();
-        if (temp->getReferencedBit() == 0) {
-            pageFrameUsed.erase(pageFrameUsed.begin());
-            pageFrameUsed.push_back(temp);
-            return temp;
-        }
-        else {
-            temp->resetReferencedBit();
-            pageFrameUsed.erase(pageFrameUsed.begin());
-            pageFrameUsed.push_back(temp);
-            continue;
-        }
+void FIFOPager::update(unsigned int protectBit, unsigned int pageTableKey) {
+    pageTable[pageTableKey]->setPresentBit();
+    if (protectBit == 0) {
+        pageTable[pageTableKey]->setReferencedBit();
+    }
+    else {
+        pageTable[pageTableKey]->setReferencedBit();
+        pageTable[pageTableKey]->setModifiedBit();
+    }
+    if (pageInMemory.size() != 16 && std::find(pageInMemory.begin(), pageInMemory.end(), pageTable[pageTableKey]->getFrameNum()) == pageInMemory.end()) {
+        pageInMemory.push_back(pageTable[pageTableKey]->getFrameNum());
     }
 }
 
-void SecondChancePager::update() {
+unsigned int SecondChancePager::getFrame() {
+    return 0;
+}
+
+void SecondChancePager::update(unsigned int protectBit, unsigned int pageTableKey) {
     
 }
 
-Pte* NRUPager::getFrame() {
-    
+unsigned int NRUPager::getFrame() {
+    return 0;
 }
 
-void NRUPager::update() {
+void NRUPager::update(unsigned int protectBit, unsigned int pageTableKey) {
     
 }

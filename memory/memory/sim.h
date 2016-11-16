@@ -14,18 +14,19 @@
 #include <fstream>
 
 class Sim {
-    std::vector<Pte* > freeFrame;
-    std::vector<Pte* > frameTable; // has value of virtual page
-    Pte* allocateFrameFromFreeList();
+    std::vector<unsigned int> freeFrame;
+    unsigned int allocateFrameFromFreeList();
     bool getNextInstruction(unsigned int&, unsigned int&);
     Pager *pager;
     std::ifstream inFile;
     int frameNumber;
-    
+    void map(unsigned int, unsigned int);
+    void zero(unsigned int);
     
     
 public:
-    Pte* getFrame();
+    Sim();
+    unsigned int getFrame();
     void simulate();
     void init(int,const char*[]);
     

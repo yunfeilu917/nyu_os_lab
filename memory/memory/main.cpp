@@ -8,13 +8,10 @@
 
 #include <iostream>
 #include <vector>
-using namespace std;
-
+#include "sim.h"
 
 int main(int argc, const char * argv[]) {
-    
-    
-    
-    
+    Sim vmm;
+    vmm.simulate();
     return 0;
 }

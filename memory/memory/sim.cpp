@@ -8,92 +8,91 @@
 
 #include "sim.h"
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include <stdio.h>
 
-//void Sim::init(int argc, const char * argv[]) {
-//    if (argc < 3) {
-//        std::cerr << "Wrong number of arguments." << std::endl;
-//        exit(0);
-//    }
-//    int c;
-//    int optLen;
-//    while ((c = getopt(argc, argv, "a:o:f:")) != -1) {
-//        switch (c) {
-//            case 'a':
-//                switch (optarg[0]) {
-//                    case 'l':
-//                        <#statements#>
-//                        break;
-//                    case 'r':
-//                        break;
-//                    case 'f':
-//                        break;
-//                    case 's':
-//                        break;
-//                    case 'c':
-//                        break;
-//                    case 'a':
-//                        break;
-//                    case 'N':
-//                        break;
-//                    case 'X':
-//                        break;
-//                    case 'Y':
-//                        break;
-//                        
-//                    default:
-//                        break;
-//                }
-//                break;
-//                // lack of option
-//                
-//            case 'f':
-//                sscanf(optarg, "%d", &frameNumber);
-//                
-//            default:
-//                break;
-//        }
-//    }
-//    
-//}
 
-Pte* Sim::getFrame() {
-    Pte* frame = allocateFrameFromFreeList();
-    if (frame == nullptr) {
+Sim::Sim() {
+    pager = new FIFOPager();
+    freeFrame.resize(16);
+    for (int i = 0; i < 16; i++) {
+        freeFrame[i] = i;
+    }
+    
+    inFile.open("/Users/yunfeilu/Downloads/lab3_assign/in1K4");
+}
+
+
+unsigned int Sim::getFrame() {
+    unsigned frame = allocateFrameFromFreeList();
+    if (frame > 15) {
         frame = pager->getFrame();
     }
     return frame;
 }
 
-bool Sim::getNextInstruction(unsigned int&, unsigned int&) {
-    return false;
+bool Sim::getNextInstruction(unsigned int& m, unsigned int& p) { // m stands for modified, p stands for page number
+    std::string line;
+    getline(inFile, line);
+    while (line.find('#') != std::string::npos) {
+        getline(inFile, line);
+    }
+    if (line == "") {
+        return false;
+    }
+    else {
+        std::istringstream iss( line );
+        iss >> m >> p;
+        return true;
+    }
+}
+
+void Sim::map(unsigned int frame, unsigned int pageTableKey) {
+    pager->pageTable[pageTableKey]->setFrameNum(frame);
+    pager->frameTable[frame] = pageTableKey;
+}
+
+
+void Sim::zero(unsigned int frame) {
+    if (pager->frameTable[frame] == 64) {
+        return;
+    }
+    pager->pageTable[pager->frameTable[frame]]->resetModifiedBit();
+    pager->pageTable[pager->frameTable[frame]]->resetPresentBit();
+    pager->pageTable[pager->frameTable[frame]]->resetPagedOutBit();
+    pager->pageTable[pager->frameTable[frame]]->resetReferencedBit();
+    pager->pageTable[pager->frameTable[frame]]->resetFrameNum();
 }
 
 void Sim::simulate() {
     unsigned int protectBit = 0;
     unsigned int pageTableKey = 0;
     while (getNextInstruction(protectBit, pageTableKey)) {
-        if (pager->pageTable[pageTableKey]->getPresentBit()) {
-            Pte* frame = getFrame();
+        std::cout << protectBit << "\t" <<pageTableKey << ": ";
+        if (pager->pageTable[pageTableKey]->getPresentBit() == 0) {
+            unsigned int frame = getFrame();
             if (pager->pageTable[pageTableKey] -> getPagedOutBit()) {
-                // pagein
+                std::cout << "Page In" << std::endl;
             }
             else {
-                //pageout
+                zero(frame);
             }
-            //map
+            map(frame, pageTableKey);
+            std::cout << pageTableKey << "->" << frame;
         }
-        //update ()
+        std::cout << std::endl;
+        pager -> update(protectBit, pageTableKey);
     }
 }
 
-Pte* Sim::allocateFrameFromFreeList() {
+
+unsigned int Sim::allocateFrameFromFreeList() {
     if (freeFrame.size() == 0) {
-        return nullptr;
+        return 16;
     }
     else {
-        Pte* frame = freeFrame.front();
+        int frame = freeFrame.front();
         freeFrame.erase(freeFrame.begin());
         return frame;
     }

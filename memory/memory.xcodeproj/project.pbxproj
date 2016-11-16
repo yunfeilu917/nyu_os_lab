@@ -11,6 +11,7 @@
 		1EC4EDEC1DD923B000A1030E /* sim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDEB1DD923B000A1030E /* sim.cpp */; };
 		1EC4EDF01DDA6AA100A1030E /* pte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDEF1DDA6AA100A1030E /* pte.cpp */; };
 		1EC4EDF31DDA6AE500A1030E /* pager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDF21DDA6AE500A1030E /* pager.cpp */; };
+		1EC4EDF61DDB63C600A1030E /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDF51DDB63C600A1030E /* random.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		1EC4EDEF1DDA6AA100A1030E /* pte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pte.cpp; sourceTree = "<group>"; };
 		1EC4EDF11DDA6ACB00A1030E /* pager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pager.h; sourceTree = "<group>"; };
 		1EC4EDF21DDA6AE500A1030E /* pager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pager.cpp; sourceTree = "<group>"; };
+		1EC4EDF41DDB626F00A1030E /* random.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
+		1EC4EDF51DDB63C600A1030E /* random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = random.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,8 @@
 				1EC4EDEF1DDA6AA100A1030E /* pte.cpp */,
 				1EC4EDF11DDA6ACB00A1030E /* pager.h */,
 				1EC4EDF21DDA6AE500A1030E /* pager.cpp */,
+				1EC4EDF41DDB626F00A1030E /* random.h */,
+				1EC4EDF51DDB63C600A1030E /* random.cpp */,
 			);
 			path = memory;
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 				1EC4EDF31DDA6AE500A1030E /* pager.cpp in Sources */,
 				1EC4EDF01DDA6AA100A1030E /* pte.cpp in Sources */,
 				1EC4EDEC1DD923B000A1030E /* sim.cpp in Sources */,
+				1EC4EDF61DDB63C600A1030E /* random.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

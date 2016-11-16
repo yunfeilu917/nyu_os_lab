@@ -10,37 +10,46 @@
 #define pager_h
 
 #include "pte.h"
+#include "random.h"
 #include <vector>
-#include <unordered_map>
+#include <list>
 
 class  Pager {
 public:
-    
-    std::unordered_map<unsigned int, Pte*> pageTable;
-    virtual Pte* getFrame() = 0;
-    virtual void update() = 0;
+    Random randGenerator;
+    unsigned int frameNum;
+    std::vector<Pte*> pageTable;
+    std::vector<unsigned int>frameTable;
+    virtual unsigned int getFrame() = 0;
+    virtual void update(unsigned int, unsigned int) = 0;
     
 };
 
 
 class FIFOPager: public Pager {
-    std::vector<Pte * > pageFrameUsed;
+    std::list<unsigned int > pageInMemory;
 public:
-    Pte* getFrame();
-    void update();
+    unsigned int getFrame();
+    void update(unsigned int, unsigned int);
+    FIFOPager();
 };
 
 class SecondChancePager: public Pager {
     std::vector<Pte *> pageFrameUsed;
 public:
-    Pte* getFrame();
-    void update();
+    unsigned int getFrame();
+    void update(unsigned int, unsigned int);
 };
 
 class NRUPager: public Pager {
     std::vector<Pte *> pageFrameUsed;
+    int clock; //reset the R bit every 10th page
 public:
-    Pte* getFrame();
-    void update();
+    unsigned int getFrame();
+    void update(unsigned int, unsigned int);
+};
+
+class ClockPager: public Pager {
+    
 };
 #endif /* pager_h */

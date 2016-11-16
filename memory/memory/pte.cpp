@@ -8,6 +8,14 @@
 
 #include "pte.h"
 
+void Pte::setFrameNum(unsigned int num ) {
+    
+    frame = num;
+}
+
+void Pte::resetFrameNum() {
+    frame = 0;
+}
 
 unsigned int Pte::getFrameNum() {
     return frame;
@@ -18,11 +26,11 @@ unsigned int Pte::getPresentBit() {
 }
 
 void Pte::setPresentBit() {
-    present = 0;
+    present = 1;
 }
 
 void Pte::resetPresentBit() {
-    present = 1;
+    present = 0;
 }
 
 unsigned int Pte::getModifiedBit() {
@@ -47,4 +55,16 @@ void Pte::resetPagedOutBit() {
 
 void Pte::setPagedOutBit() {
     pagedout = 1;
+}
+
+unsigned int Pte::getReferencedBit() {
+    return referenced;
+}
+
+void Pte::setReferencedBit() {
+    referenced = 1;
+}
+
+void Pte::resetReferencedBit() {
+    referenced = 0;
 }

@@ -16,15 +16,21 @@ class Pte  {
     unsigned int frame:6;
 public:
     unsigned int getFrameNum();
+    void setFrameNum(unsigned int);
+    void resetFrameNum();
     unsigned int getPresentBit();
     void setPresentBit();
     void resetPresentBit();
+    unsigned int getReferencedBit();
+    void setReferencedBit();
+    void resetReferencedBit();
     unsigned int getModifiedBit();
     void setModifiedBit();
     void resetModifiedBit();
     unsigned int getPagedOutBit();
     void setPagedOutBit();
     void resetPagedOutBit();
+    
     
 };
 
