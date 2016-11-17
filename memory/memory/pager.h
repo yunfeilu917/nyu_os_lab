@@ -18,38 +18,45 @@ class  Pager {
 public:
     Random randGenerator;
     unsigned int frameNum;
+    unsigned int pageSize;
     std::vector<Pte*> pageTable;
     std::vector<unsigned int>frameTable;
     virtual unsigned int getFrame() = 0;
-    virtual void update(unsigned int, unsigned int) = 0;
-    
+    virtual void update_pte(unsigned int, unsigned int) = 0;
 };
 
-
 class FIFOPager: public Pager {
-    std::list<unsigned int > pageInMemory;
+    std::list<unsigned int > frameUsed; // store which
 public:
     unsigned int getFrame();
-    void update(unsigned int, unsigned int);
-    FIFOPager();
+    void update_pte(unsigned int, unsigned int);
+    FIFOPager(unsigned int);
+
 };
 
 class SecondChancePager: public Pager {
-    std::vector<Pte *> pageFrameUsed;
+    std::list<unsigned int > frameUsed; // store which
 public:
     unsigned int getFrame();
-    void update(unsigned int, unsigned int);
+    void update_pte(unsigned int, unsigned int);
+    SecondChancePager(unsigned int);
 };
 
 class NRUPager: public Pager {
-    std::vector<Pte *> pageFrameUsed;
-    int clock; //reset the R bit every 10th page
+    int clock;
+    Random *randGenerator;
 public:
     unsigned int getFrame();
-    void update(unsigned int, unsigned int);
+    void update_pte(unsigned int, unsigned int);
+    NRUPager(unsigned int);
 };
 
-class ClockPager: public Pager {
-    
+class RandomPager: public Pager {
+    Random *randGenerator;
+public:
+    unsigned int getFrame();
+    void update_pte(unsigned int, unsigned int);
+    RandomPager(unsigned int);
 };
+
 #endif /* pager_h */
