@@ -59,4 +59,12 @@ public:
     RandomPager(unsigned int);
 };
 
+class ClockFPager: public Pager { // clock algorithm based on the frame
+    unsigned int clock;
+public:
+    unsigned int getFrame();
+    void update_pte(unsigned int, unsigned int);
+    ClockFPager(unsigned int);
+
+};
 #endif /* pager_h */

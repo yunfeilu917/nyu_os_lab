@@ -20,7 +20,7 @@ Sim::Sim() {
     pageNum = 64;
     m = 0;
     u = 0;
-    pager = new RandomPager(frameNumber);
+    pager = new ClockFPager(frameNumber);
     freeFrame.resize(frameNumber);
     for (int i = 0; i < frameNumber; i++) {
         freeFrame[i] = i;
