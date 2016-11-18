@@ -67,4 +67,12 @@ public:
     ClockFPager(unsigned int);
 
 };
+
+class ClockVPager: public Pager {
+    unsigned int clock;
+public:
+    unsigned int getFrame();
+    void update_pte(unsigned int, unsigned int);
+    ClockVPager(unsigned int);
+};
 #endif /* pager_h */
