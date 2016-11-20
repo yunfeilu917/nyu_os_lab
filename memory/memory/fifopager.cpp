@@ -8,20 +8,16 @@
 
 #include "pager.h"
 
-FIFOPager::FIFOPager(unsigned int frameTableSize) {
-    pageSize = 64;
-    frameNum = 16;
-    pageTable.resize(pageSize);
-    for (int i = 0; i < pageSize; i++) {
-        pageTable[i] = new Pte();
-    }
-    frameTable.resize(frameTableSize);
-    for (int i = 0; i < frameTableSize; i++) {
-        frameTable[i] = pageSize;
-    }
-    
+FIFOPager::FIFOPager() {
 }
 
+void FIFOPager::setFrameNum(unsigned int num) {
+    frameNum = num;
+    frameTable.resize(num);
+    for (int i = 0; i < num; i++) {
+        frameTable[i] = pageSize;
+    }
+}
 
 
 unsigned int FIFOPager::getFrame() {

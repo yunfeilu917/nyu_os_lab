@@ -14,20 +14,111 @@
 
 
 Sim::Sim() {
-    pageIn = 0;
-    pageOut = 0;
-    frameNumber = 16;
+    statsUnmaps = statsMaps = statsIn = statsOut = statsZero = totalCost = 0;
+    frameNumber = 32;
     pageNum = 64;
-    m = 0;
-    u = 0;
-    pager = new ClockVPager(frameNumber);
+    pager = new FIFOPager();
     freeFrame.resize(frameNumber);
     for (int i = 0; i < frameNumber; i++) {
         freeFrame[i] = i;
     }
     instructionNum = 0;
-    inFile.open("/Users/yunfeilu/Downloads/lab3_assign/in1K4");
+    O = P = F = S = p = f = a = false;
 }
+
+void Sim::init(int argc , char* argv[]) {
+    if (argc < 3) {
+        std::cerr << "Wrong parameter number, should be at least three\n";
+        exit(1);
+    }
+    else {
+        int c;
+        size_t optLen;
+        while ((c = getopt(argc, argv, "a:o:f:")) != -1) {
+            switch (c) {
+                    // set algorithm
+                case 'a':
+                    switch (optarg[0]) {
+                        case 'r':
+                            pager = new RandomPager();
+                            break;
+                        case 'f':
+                            pager = new FIFOPager();
+                            break;
+                        case 's':
+                            pager = new SecondChancePager();
+                            break;
+                        case 'c':
+                            pager = new ClockFPager();
+                            break;
+                        case 'a':
+                            pager = new AgingFPager();
+                            break;
+                        case 'N':
+                            pager = new NRUPager();
+                            break;
+                        case 'X':
+                            pager = new ClockVPager();
+                            break;
+                        case 'Y':
+                            pager = new AgingVPager();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                    // set output options
+                case 'o':
+                    optLen = strlen(optarg);
+                    for (int i = 0; i < optLen; i++) {
+                        switch (optarg[i]) {
+                            case 'O':
+                                O = true;
+                                break;
+                            case 'P':
+                                P = true;
+                                break;
+                            case 'F':
+                                F = true;
+                                break;
+                            case 'S':
+                                S = true;
+                                break;
+                            case 'p':
+                                p = true;
+                                break;
+                            case 'f':
+                                f = true;
+                                break;
+                            case 'a':
+                                a = true;
+                                break;
+                        }
+                    }
+                    break;
+                    // set number of frame
+                case 'f':
+                    sscanf(optarg, "%d", &frameNumber);
+                    if (frameNumber > 64) {
+                        fprintf(stderr, "Too many frames, not supported.\n");
+                        exit(2);
+                    }
+                    pager->setFrameNum(frameNumber);
+                    freeFrame.resize(frameNumber);
+                    for (int i = 0; i < frameNumber; i++) {
+                        freeFrame[i] = i;
+                    }
+                    break;
+            }
+        }
+        inFile.open(argv[argc - 2]);
+        if (!inFile) {
+            fprintf(stderr, "Instruction file cannot found.\n");
+            exit(3);
+        }
+    }
+}
+
 
 
 unsigned int Sim::getFrame() {
@@ -59,15 +150,19 @@ void Sim::unmap(unsigned int frame) {
     if (page == pager->pageSize) {
         return;
     }
-    u++;
+    statsUnmaps++;
     pager->pageTable[page]->resetPresentBit(); //simply tell it's not available, then check if we need to do the pageout
-    std::cout << instructionNum<<": UNMAP  "<<pager->frameTable[frame]<<"   "<<frame<<std::endl;
+    if (O) {
+        printf("%d: UNMAP%4d%4d\n", instructionNum, pager->frameTable[frame], frame);
+    }
     if (pager->pageTable[page]->getModifiedBit() == 1) {
         pager->pageTable[page]->setPagedOutBit();
         pager->pageTable[page]->resetModifiedBit();
         pager->pageTable[page]->resetReferencedBit();
-        std::cout << instructionNum<<": OUT    "<<page<<"  "<<frame<<std::endl;
-        pageOut++;
+        if (O) {
+            printf("%d: OUT  %4d%4d\n", instructionNum, page, frame);
+        }
+        statsOut++;
     }
 }
 
@@ -91,71 +186,92 @@ void Sim::simulate() {
     unsigned int protectBit = 0;
     unsigned int pageTableKey = 0;
     while (getNextInstruction(protectBit, pageTableKey)) {
-        std::cout << "==> inst: "<<protectBit << " " <<pageTableKey << std::endl;
+        if (O) {
+            printf("==> inst: %d %d\n", protectBit, pageTableKey);
+        }
         if (pager->pageTable[pageTableKey]->getPresentBit() == 0) {
             unsigned int frame = getFrame();
             unmap(frame);
             if (pager->pageTable[pageTableKey] -> getPagedOutBit()) {
-                std::cout << instructionNum<<": IN      "<<pageTableKey<<"  "<<frame << std::endl;
-                pageIn++;
+                if (O) {
+                    printf("%d: IN   %4d%4d\n", instructionNum, pageTableKey, frame);
+                }
+                statsIn++;
                 //pager->pageTable[pageTableKey]->resetPagedOutBit();
             }
             else {
                 zero(frame);
-                std::cout << instructionNum<<": ZERO"<<"        "<<frame << std::endl;
-
+                if (O) {
+                    printf("%d: ZERO     %4d\n", instructionNum, frame);
+                }
                 
-                //zero++;
+                statsZero++;
             }
             map(frame, pageTableKey);
-            m++;
-            std::cout <<instructionNum<<": MAP     "<<pageTableKey<<"   "<<frame<<std::endl;
+            statsMaps++;
+            if (O) {
+                printf("%d: MAP  %4d%4d\n", instructionNum, pageTableKey, frame);
+            }
         }
         pager -> update_pte(protectBit, pageTableKey);
         instructionNum++;
     }
-    std::cout << u << " "<<m <<pageIn << "\t"<< pageOut<< std::endl;
-    for (int i = 0; i < pager->pageTable.size(); i++) {
-        std::string output;
-        if(pager->pageTable[i]->getPresentBit() == 0) {
-            if (pager->pageTable[i]->getPagedOutBit() == 0) {
-                output = "*";
+
+    if (P) {
+        for (int i = 0; i < pager->pageTable.size(); i++) {
+            std::string output;
+            if(pager->pageTable[i]->getPresentBit() == 0) {
+                if (pager->pageTable[i]->getPagedOutBit() == 0) {
+                    output = "*";
+                }
+                else
+                    output = "#";
             }
-            else
-                output = "#";
+            else {
+                output = std::to_string(i) + ':';
+                if (pager->pageTable[i]->getReferencedBit() == 1) {
+                    output += 'R';
+                }
+                else
+                    output += '-';
+                if (pager->pageTable[i]->getModifiedBit() == 1) {
+                    output += 'M';
+                }
+                else
+                    output += '-';
+                if (pager->pageTable[i]->getPagedOutBit() == 1) {
+                    output += 'S';
+                }
+                else
+                    output += '-';
+            }
+            std::cout << output <<" ";
         }
-        else {
-            output = std::to_string(i) + ':';
-            if (pager->pageTable[i]->getReferencedBit() == 1) {
-                output += 'R';
-            }
-            else
-                output += '-';
-            if (pager->pageTable[i]->getModifiedBit() == 1) {
-                output += 'M';
-            }
-            else
-                output += '-';
-            if (pager->pageTable[i]->getPagedOutBit() == 1) {
-                output += 'S';
-            }
-            else
-                output += '-';
-        }
-        std::cout << output <<" ";
+        std::cout << std::endl;
     }
-    for (int i = 0; i < pager->frameTable.size();i++) {
-        if (pager->frameTable[i] == pageNum) {
-            std::cout <<"*" ;
+    if (F) {
+        for (int i = 0; i < pager->frameTable.size();i++) {
+            if (pager->frameTable[i] == pageNum) {
+                std::cout <<"* ";
+            }
+            else std::cout << pager->frameTable[i] <<" ";
         }
-        else std::cout << pager->frameTable[i];
+        std::cout << std::endl;
+    }
+
+    if (S) {
+        totalCost = instructionNum + 400 * (statsMaps + statsUnmaps)
+        + 3000 * (statsIn + statsOut) + 150 * statsZero;
+        
+        printf("SUM %d U=%d M=%d I=%d O=%d Z=%d ===> %llu\n",
+               instructionNum, statsUnmaps, statsMaps, statsIn, statsOut, statsZero, totalCost);
     }
 }
 
 
 unsigned int Sim::allocateFrameFromFreeList() {
     if (freeFrame.size() == 0) {     //if freeFrame is empty, then just return a max frame num to show there is no open slot in page frame table
-        return 16;
+        return frameNumber;
     }
     else {
         int frame = freeFrame.front();

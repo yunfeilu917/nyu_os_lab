@@ -20,20 +20,23 @@ class Sim {
     Pager *pager;
     std::ifstream inFile;
     unsigned int frameNumber;
-    int pageIn;
-    int pageOut;
-//    int zero;
     int instructionNum;
-    int pageNum;
-    int m;
-    int u;
+    int pageNum; // in this lab, is always 64
+    int statsUnmaps;
+    int statsMaps;
+    int statsIn;
+    int statsOut;
+    int statsZero;
+    unsigned long long totalCost;
+
+    bool O,P,F,S,p,f,a;
     
     
 public:
     Sim();
     unsigned int getFrame();
     void simulate();
-    void init(int,const char*[]);
+    void init(int,char*[]);
     void unmap(unsigned int);
     void zero(unsigned int);
     void map(unsigned int, unsigned int);

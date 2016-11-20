@@ -8,18 +8,16 @@
 
 #include "pager.h"
 
-RandomPager::RandomPager(unsigned int frameTableSize) {
-    pageSize = 64;
-    frameNum = frameTableSize;
-    pageTable.resize(pageSize);
-    for (int i = 0; i < pageSize; i++) {
-        pageTable[i] = new Pte();
-    }
-    frameTable.resize(frameTableSize);
-    for (int i = 0; i < frameTableSize; i++) { // set all frames point to 64, which is not a valid address.
+RandomPager::RandomPager() {
+    randGenerator = new Random("/Users/yunfeilu/Downloads/lab3_assign/rfile");
+}
+
+void RandomPager::setFrameNum(unsigned int num) {
+    frameNum = num;
+    frameTable.resize(num);
+    for (int i = 0; i < num; i++) {
         frameTable[i] = pageSize;
     }
-    randGenerator = new Random("/Users/yunfeilu/Downloads/lab3_assign/rfile");
 }
 
 unsigned int RandomPager::getFrame() {

@@ -10,8 +10,9 @@
 #include <vector>
 #include "sim.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char * argv[]) {
     Sim vmm;
+    vmm.init(argc, argv);
     vmm.simulate();
     return 0;
 }

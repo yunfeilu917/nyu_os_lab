@@ -13,6 +13,9 @@
 		1EA82BF21DDE66C90094EB65 /* randompager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BF11DDE66C90094EB65 /* randompager.cpp */; };
 		1EA82BF41DDEB6290094EB65 /* clockfpager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BF31DDEB6290094EB65 /* clockfpager.cpp */; };
 		1EA82BF61DDF3A770094EB65 /* clockvpager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BF51DDF3A770094EB65 /* clockvpager.cpp */; };
+		1EA82BF81DDFBC730094EB65 /* agingf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BF71DDFBC730094EB65 /* agingf.cpp */; };
+		1EA82BFA1DE00E440094EB65 /* agingv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BF91DE00E440094EB65 /* agingv.cpp */; };
+		1EA82BFC1DE0B8670094EB65 /* pager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EA82BFB1DE0B8670094EB65 /* pager.cpp */; };
 		1EC4EDDD1DD8C5E700A1030E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDDC1DD8C5E700A1030E /* main.cpp */; };
 		1EC4EDEC1DD923B000A1030E /* sim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDEB1DD923B000A1030E /* sim.cpp */; };
 		1EC4EDF01DDA6AA100A1030E /* pte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4EDEF1DDA6AA100A1030E /* pte.cpp */; };
@@ -38,6 +41,9 @@
 		1EA82BF11DDE66C90094EB65 /* randompager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = randompager.cpp; sourceTree = "<group>"; };
 		1EA82BF31DDEB6290094EB65 /* clockfpager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clockfpager.cpp; sourceTree = "<group>"; };
 		1EA82BF51DDF3A770094EB65 /* clockvpager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clockvpager.cpp; sourceTree = "<group>"; };
+		1EA82BF71DDFBC730094EB65 /* agingf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = agingf.cpp; sourceTree = "<group>"; };
+		1EA82BF91DE00E440094EB65 /* agingv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = agingv.cpp; sourceTree = "<group>"; };
+		1EA82BFB1DE0B8670094EB65 /* pager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pager.cpp; sourceTree = "<group>"; };
 		1EC4EDD91DD8C5E700A1030E /* memory */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = memory; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC4EDDC1DD8C5E700A1030E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1EC4EDEB1DD923B000A1030E /* sim.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sim.cpp; sourceTree = "<group>"; };
@@ -93,6 +99,9 @@
 				1EA82BF11DDE66C90094EB65 /* randompager.cpp */,
 				1EA82BF31DDEB6290094EB65 /* clockfpager.cpp */,
 				1EA82BF51DDF3A770094EB65 /* clockvpager.cpp */,
+				1EA82BF71DDFBC730094EB65 /* agingf.cpp */,
+				1EA82BF91DE00E440094EB65 /* agingv.cpp */,
+				1EA82BFB1DE0B8670094EB65 /* pager.cpp */,
 			);
 			path = memory;
 			sourceTree = "<group>";
@@ -155,12 +164,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EA82BF21DDE66C90094EB65 /* randompager.cpp in Sources */,
+				1EA82BFC1DE0B8670094EB65 /* pager.cpp in Sources */,
 				1E986DCF1DDE519500BEF883 /* nrupager.cpp in Sources */,
 				1EC4EDDD1DD8C5E700A1030E /* main.cpp in Sources */,
 				1EA82BF61DDF3A770094EB65 /* clockvpager.cpp in Sources */,
 				1E986DCB1DDD344600BEF883 /* fifopager.cpp in Sources */,
 				1EC4EDF01DDA6AA100A1030E /* pte.cpp in Sources */,
 				1E986DCD1DDE392A00BEF883 /* secondchancepager.cpp in Sources */,
+				1EA82BFA1DE00E440094EB65 /* agingv.cpp in Sources */,
+				1EA82BF81DDFBC730094EB65 /* agingf.cpp in Sources */,
 				1EC4EDEC1DD923B000A1030E /* sim.cpp in Sources */,
 				1EC4EDF61DDB63C600A1030E /* random.cpp in Sources */,
 				1EA82BF41DDEB6290094EB65 /* clockfpager.cpp in Sources */,
